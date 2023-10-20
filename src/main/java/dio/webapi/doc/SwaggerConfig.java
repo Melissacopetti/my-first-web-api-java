@@ -17,8 +17,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
    
     private Contact contato() {
-        return new Contact("team", "", "bla@bla.com");
+        return new Contact(
+                "Seu Nome",
+                "https://www.seusite.com.br",
+                "seuemail@seudominio.com");
     }
+    
      private ApiInfoBuilder informacoesApi() {
 
         ApiInfoBuilder apiInfoBuilder = new ApiInfoBuilder();
@@ -29,24 +33,21 @@ public class SwaggerConfig {
         apiInfoBuilder.termsOfServiceUrl("Termo de uso: Open Source");
         apiInfoBuilder.license("Licença - Sua Empresa");
         apiInfoBuilder.licenseUrl("http://www.seusite.com.br");
-        apiInfoBuilder.contact((springfox.documentation.service.Contact) this.contato());
+        apiInfoBuilder.contact(this.contato());
 
         return apiInfoBuilder;
 
     }
     @Bean
-    public Docket detalheApi() {
-        Docket docket = new Docket(DocumentationType.SWAGGER_2);
-
-        docket
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("dio.springbootweb.controller"))
+    public Docket api() { 
+        return new Docket(DocumentationType.SWAGGER_2)  
+          .select()
+                .apis(RequestHandlerSelectors.basePackage("dio.webapi.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(this.informacoesApi().build())
                 .consumes(new HashSet<String>(Arrays.asList("application/json")))
-                .produces(new HashSet<String>(Arrays.asList("application/json")));
-
-        return docket;
+                .produces(new HashSet<String>(Arrays.asList("application/json")));                                       
     }
+  
 }
